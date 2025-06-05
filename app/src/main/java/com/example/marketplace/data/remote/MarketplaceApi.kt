@@ -1,6 +1,7 @@
 package com.example.marketplace.data.remote
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MarketplaceApi {
@@ -14,9 +15,9 @@ interface MarketplaceApi {
     @GET("/users/")
     fun getUserDtoList(): List<UserDto>
 
-    @GET("/users/")
+    @GET("/users/{user_id}")
     fun getUserDtoById(
-        @Query("") userId: Int
+        @Path("user_id") userId: Int
     ): UserDto
 
     @GET("/items/")
@@ -27,8 +28,10 @@ interface MarketplaceApi {
         @Query("name") itemName: String
     ): List<ItemDto>
 
-    @GET("/items/")
+    @GET("/items/{item_id}")
     fun getItemDtoById(
-        @Query("") itemId: Int
+        @Path("item_id") itemId: Int
     ): ItemDto
+
+
 }
