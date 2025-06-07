@@ -5,9 +5,9 @@ import com.squareup.moshi.Json
 data class OrderDto(
     val address: String,
     @field:Json(name = "order_id")
-    val orderId: Int,
-    val status: String,
+    val orderId: Int = -1,
+    val status: String = "",
     @field:Json(name = "order_date")
-    val orderDate: String,
+    val orderDate: String = "",
     val items: List<ItemDto>
 )
