@@ -12,6 +12,7 @@ import retrofit2.http.Part
 import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.DELETE
 
 interface MarketplaceApi {
 
@@ -19,9 +20,6 @@ interface MarketplaceApi {
 
     @GET("/users/me")
     fun getMyUserDto(): UserDto
-
-    @GET("/users/me/orders/")
-    fun getMyOrderDtoList(): List<OrderDto>
 
     @GET("/users/")
     fun getUserDtoList(): List<UserDto>
@@ -36,11 +34,24 @@ interface MarketplaceApi {
         @Body user: String
     ): Response<String>
 
+    @DELETE("/users/{user_id}")
+    fun deleteUserById(
+       @Path("user_id") userId: Int
+    ): Response<String>
+
     // ORDERS
+
+    @GET("/users/me/orders/")
+    fun getMyOrderDtoList(): List<OrderDto>
 
     @POST("/users/me/orders/")
     fun createOrder(
         @Body order: OrderDto
+    ): Response<String>
+
+    @DELETE("/orders/{order_id}")
+    fun deleteOrderById(
+        @Path("order_id") orderId: Int
     ): Response<String>
 
     // ITEMS
@@ -64,4 +75,9 @@ interface MarketplaceApi {
         @PartMap partMap: MutableMap<String, RequestBody>,
         @Part image: MultipartBody.Part
     ): Response<ItemDto>
+
+    @DELETE("/items/{item_id}")
+    fun deleteItemById(
+        @Path("item_id") itemId: Int
+    ): Response<String>
 }
