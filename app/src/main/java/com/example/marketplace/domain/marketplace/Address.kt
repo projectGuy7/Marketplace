@@ -1,5 +1,9 @@
 package com.example.marketplace.domain.marketplace
 
+
+/*
+ * For Future
+ */
 data class Address(
     val country: String,
     val state: String,

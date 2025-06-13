@@ -4,10 +4,10 @@ import com.squareup.moshi.Json
 
 data class ItemDto(
     val name: String,
-    val price: Double,
+    val price: Int,
     val quantity: Int,
     @field:Json(name = "image_url")
-    val imageUrl: String,
+    val imageUri: String,
     @field:Json(name = "item_id")
     val itemId: Int
 )

@@ -3,9 +3,9 @@ package com.example.marketplace.domain.marketplace
 import java.time.LocalDate
 
 data class Order(
-    val address: Address,
+    val address: String,
     val orderId: Int,
     val status: String,
-    val orderDate: LocalDate,
+    val orderDate: String,
     val items: List<Item>
 )

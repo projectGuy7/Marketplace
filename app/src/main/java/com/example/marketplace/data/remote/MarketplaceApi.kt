@@ -2,7 +2,6 @@ package com.example.marketplace.data.remote
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,7 +31,7 @@ interface MarketplaceApi {
     @POST("/users/")
     fun createUser(
         @Body user: String
-    ): Response<String>
+    ): Response<UserDto>
 
     @DELETE("/users/{user_id}")
     fun deleteUserById(
