@@ -2,10 +2,19 @@ package com.example.marketplace.data.mappers
 
 import com.example.marketplace.data.remote.ItemDto
 import com.example.marketplace.data.remote.OrderDto
+import com.example.marketplace.data.remote.TokenDto
 import com.example.marketplace.domain.marketplace.Item
 import com.example.marketplace.domain.marketplace.User
 import com.example.marketplace.data.remote.UserDto
 import com.example.marketplace.domain.marketplace.Order
+import com.example.marketplace.domain.marketplace.Token
+
+fun TokenDto.toToken(): Token {
+    return Token(
+        accessToken = this.accessToken,
+        tokenType = this.tokenType
+    )
+}
 
 fun ItemDto.toItem(): Item {
     return Item(
@@ -21,6 +30,16 @@ fun UserDto.toUser(): User {
     return User(
         name = this.name,
         email = this.email,
+        password = this.password,
+        userId = this.userId
+    )
+}
+
+fun User.toUserDto(): UserDto {
+    return UserDto(
+        name = this.name,
+        email = this.email,
+        password = this.password,
         userId = this.userId
     )
 }

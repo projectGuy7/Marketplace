@@ -1,0 +1,3 @@
+package com.example.marketplace.presentation.viewmodels.basemvipattern
+
+interface ViewAction

@@ -12,8 +12,24 @@ import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.DELETE
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 
 interface MarketplaceApi {
+
+    // Authorization
+
+    @FormUrlEncoded
+    @POST("/login/access_token")
+    fun login(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Response<TokenDto>
+
+    @POST("/register")
+    fun register(
+        @Body user: UserDto
+    ): Response<String>
 
     // USERS
 
@@ -30,7 +46,7 @@ interface MarketplaceApi {
 
     @POST("/users/")
     fun createUser(
-        @Body user: String
+        @Body user: UserDto
     ): Response<UserDto>
 
     @DELETE("/users/{user_id}")

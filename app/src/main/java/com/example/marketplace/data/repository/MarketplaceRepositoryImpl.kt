@@ -3,12 +3,16 @@ package com.example.marketplace.data.repository
 import com.example.marketplace.data.mappers.toItem
 import com.example.marketplace.data.mappers.toOrder
 import com.example.marketplace.data.mappers.toOrderDto
+import com.example.marketplace.data.mappers.toToken
 import com.example.marketplace.data.mappers.toUser
+import com.example.marketplace.data.mappers.toUserDto
 import com.example.marketplace.data.remote.Fail
 import com.example.marketplace.data.remote.MarketplaceApi
+import com.example.marketplace.data.remote.TokenDto
 import com.example.marketplace.data.remote.UserDto
 import com.example.marketplace.domain.marketplace.Item
 import com.example.marketplace.domain.marketplace.Order
+import com.example.marketplace.domain.marketplace.Token
 import com.example.marketplace.domain.marketplace.User
 import com.example.marketplace.domain.repository.MarketplaceRepository
 import com.example.marketplace.domain.util.Resource
@@ -26,6 +30,33 @@ class MarketplaceRepositoryImpl(
     private val api: MarketplaceApi,
     private val adapter: JsonAdapter<Fail>
 ): MarketplaceRepository {
+
+    override suspend fun login(
+        username: String,
+        password: String
+    ): Resource<Token> {
+        val response = api.login(username, password)
+
+        return if(response.isSuccessful) {
+            Resource.Success(
+                data = response.body()!!.toToken()
+            )
+        } else {
+            returnErrorResource(response)
+        }
+    }
+
+    override suspend fun register(user: User): Resource<String> {
+        val response = api.register(user.toUserDto())
+
+        return if(response.isSuccessful) {
+            Resource.Success(
+                data = "Successfully deleted user"
+            )
+        } else {
+            returnErrorResource(response)
+        }
+    }
 
     override suspend fun getMyUser(): Resource<User> {
         return try {
@@ -47,8 +78,8 @@ class MarketplaceRepositoryImpl(
         }
     }
 
-    override suspend fun createUser(user: String): Resource<User> {
-        val response = api.createUser(user)
+    override suspend fun createUser(user: User): Resource<User> {
+        val response = api.createUser(user.toUserDto())
 
         return if(response.isSuccessful) {
             Resource.Success(
