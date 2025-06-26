@@ -2,14 +2,13 @@ package com.example.marketplace.presentation.viewmodels.basemvipattern
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
+import com.example.marketplace.presentation.viewmodels.loginmvi.LoginState
 
-abstract class BaseViewModel<ACTION: ViewAction, INTENT: ViewIntent, STATE: ViewState>: ViewModel() {
+abstract class BaseViewModel<INTENT: ViewIntent, STATE: ViewState>: ViewModel() {
 
-    abstract val state: MutableState<STATE>
+    abstract var state: STATE
         protected set
 
-    abstract fun intentToAction(intent: INTENT): ACTION
-
-    abstract fun handleAction(action: ACTION)
+    abstract fun handleIntent(intent: INTENT)
 
 }

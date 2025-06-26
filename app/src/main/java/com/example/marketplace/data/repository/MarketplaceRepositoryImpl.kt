@@ -46,12 +46,36 @@ class MarketplaceRepositoryImpl(
         }
     }
 
+    override suspend fun refreshToken(refreshToken: Map<String, String>): Resource<Token> {
+        val response = api.refreshToken(refreshToken)
+
+        return if(response.isSuccessful) {
+            Resource.Success(
+                data = response.body()!!.toToken()
+            )
+        } else {
+            returnErrorResource(response)
+        }
+    }
+
     override suspend fun register(user: User): Resource<String> {
         val response = api.register(user.toUserDto())
 
         return if(response.isSuccessful) {
             Resource.Success(
                 data = "Successfully deleted user"
+            )
+        } else {
+            returnErrorResource(response)
+        }
+    }
+
+    override suspend fun verifyEmail(emailVerification: Map<String, String>): Resource<Token> {
+        val response = api.verifyEmail(emailVerification)
+
+        return if (response.isSuccessful) {
+            Resource.Success(
+                data = response.body()!!.toToken()
             )
         } else {
             returnErrorResource(response)

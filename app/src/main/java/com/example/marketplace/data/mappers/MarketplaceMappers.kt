@@ -12,7 +12,8 @@ import com.example.marketplace.domain.marketplace.Token
 fun TokenDto.toToken(): Token {
     return Token(
         accessToken = this.accessToken,
-        tokenType = this.tokenType
+        tokenType = this.tokenType,
+        refreshToken = this.refreshToken
     )
 }
 

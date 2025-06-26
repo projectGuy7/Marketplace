@@ -25,14 +25,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.marketplace.presentation.viewmodels.basemvipattern.ViewIntent
+import com.example.marketplace.presentation.viewmodels.loginmvi.LoginIntent
+import com.example.marketplace.presentation.viewmodels.loginmvi.LoginState
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LogIn(
-    onLogInPressed: (String, String) -> Unit
+    state: LoginState,
+    onEvent: (ViewIntent) -> Unit
 ) {
-    var loginValue: String by rememberSaveable { mutableStateOf("") }
-    var passwordValue : String by rememberSaveable { mutableStateOf("") }
 
     val defaultModifier = Modifier.padding(10.dp)
     Column(
@@ -46,15 +47,22 @@ fun LogIn(
             text = "Log in"
         )
         TextField(
-            value = loginValue,
-            onValueChange = { newValue: String -> loginValue = newValue },
+            value = state.loginField,
+            onValueChange = { newValue: String -> onEvent(LoginIntent.TypeInLoginField(newValue))},
             placeholder = { Text("Type in your login") },
             singleLine = true,
             modifier = defaultModifier
         )
         TextField(
-            value = passwordValue,
-            onValueChange = { newValue: String -> passwordValue = newValue },
+            value = state.emailField,
+            onValueChange = { newValue: String -> onEvent(LoginIntent.TypeInEmailField(newValue))},
+            placeholder = { Text("Type in your email address") },
+            singleLine = true,
+            modifier = defaultModifier
+        )
+        TextField(
+            value = state.passwordField,
+            onValueChange = { newValue: String -> onEvent(LoginIntent.TypeInPasswordField(newValue))},
             placeholder = { Text("Type in your password") },
             singleLine = true,
             modifier = defaultModifier
@@ -62,10 +70,9 @@ fun LogIn(
         Button(
             modifier = defaultModifier,
             onClick = {
-                onLogInPressed(loginValue, passwordValue)
+                onEvent(LoginIntent.SendCredentials)
             },
-            content =
-                {
+            content = {
                     Box(
                         modifier = Modifier.width(80.dp).height(40.dp),
                         contentAlignment = Alignment.Center
@@ -88,5 +95,8 @@ fun LogIn(
 )
 @Composable
 fun LogInPreview() {
-    LogIn({a, b -> })
+    LogIn(
+        LoginState(),
+        {}
+    )
 }

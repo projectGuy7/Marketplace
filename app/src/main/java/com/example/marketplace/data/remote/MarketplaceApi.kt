@@ -20,79 +20,89 @@ interface MarketplaceApi {
     // Authorization
 
     @FormUrlEncoded
-    @POST("/login/access_token")
-    fun login(
+    @POST("/token")
+    suspend fun login(
         @Field("username") username: String,
         @Field("password") password: String
     ): Response<TokenDto>
 
+    @POST("/token/refresh")
+    suspend fun refreshToken(
+        @Body refreshToken: Map<String, String>
+    ): Response<TokenDto>
+
     @POST("/register")
-    fun register(
+    suspend fun register(
         @Body user: UserDto
     ): Response<String>
+
+    @POST("/verify_email")
+    suspend fun verifyEmail(
+        @Body emailVerification: Map<String, String>
+    ): Response<TokenDto>
 
     // USERS
 
     @GET("/users/me")
-    fun getMyUserDto(): UserDto
+    suspend fun getMyUserDto(): UserDto
 
     @GET("/users/")
-    fun getUserDtoList(): List<UserDto>
+    suspend fun getUserDtoList(): List<UserDto>
 
     @GET("/users/{user_id}")
-    fun getUserDtoById(
+    suspend fun getUserDtoById(
         @Path("user_id") userId: Int
     ): UserDto
 
     @POST("/users/")
-    fun createUser(
+    suspend fun createUser(
         @Body user: UserDto
     ): Response<UserDto>
 
     @DELETE("/users/{user_id}")
-    fun deleteUserById(
+    suspend fun deleteUserById(
        @Path("user_id") userId: Int
     ): Response<String>
 
     // ORDERS
 
     @GET("/users/me/orders/")
-    fun getMyOrderDtoList(): List<OrderDto>
+    suspend fun getMyOrderDtoList(): List<OrderDto>
 
     @POST("/users/me/orders/")
-    fun createOrder(
+    suspend fun createOrder(
         @Body order: OrderDto
     ): Response<String>
 
     @DELETE("/orders/{order_id}")
-    fun deleteOrderById(
+    suspend fun deleteOrderById(
         @Path("order_id") orderId: Int
     ): Response<String>
 
     // ITEMS
 
     @GET("/items/")
-    fun getItemDtoList(): List<ItemDto>
+    suspend fun getItemDtoList(): List<ItemDto>
 
     @GET("/items/")
-    fun getItemDtoListByName(
+    suspend fun getItemDtoListByName(
         @Query("name") itemName: String
     ): List<ItemDto>
 
     @GET("/items/{item_id}")
-    fun getItemDtoById(
+    suspend fun getItemDtoById(
         @Path("item_id") itemId: Int
     ): ItemDto
 
     @Multipart
     @POST("/items/")
-    fun createItem(
+    suspend fun createItem(
         @PartMap partMap: MutableMap<String, RequestBody>,
         @Part image: MultipartBody.Part
     ): Response<ItemDto>
 
     @DELETE("/items/{item_id}")
-    fun deleteItemById(
+    suspend fun deleteItemById(
         @Path("item_id") itemId: Int
     ): Response<String>
 }
