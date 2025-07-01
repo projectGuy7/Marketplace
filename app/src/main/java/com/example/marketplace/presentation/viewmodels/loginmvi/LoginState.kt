@@ -10,3 +10,4 @@ data class LoginState(
     val loading: Boolean = false,
     val error: String? = null
 ): ViewState
+

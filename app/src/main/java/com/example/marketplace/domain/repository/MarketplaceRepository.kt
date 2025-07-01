@@ -13,15 +13,6 @@ import retrofit2.http.Multipart
 
 interface MarketplaceRepository {
 
-    suspend fun login(username: String, password: String): Resource<Token>
-
-    suspend fun refreshToken(refreshToken: Map<String, String>): Resource<Token>
-
-    suspend fun register(user: User): Resource<String>
-
-    suspend fun verifyEmail(emailVerification: Map<String, String>): Resource<Token>
-
-
     suspend fun getMyUser(): Resource<User>
 
     suspend fun getUserById(userId: Int): Resource<User>

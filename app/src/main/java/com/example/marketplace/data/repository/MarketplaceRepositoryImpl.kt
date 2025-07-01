@@ -10,6 +10,7 @@ import com.example.marketplace.data.remote.Fail
 import com.example.marketplace.data.remote.MarketplaceApi
 import com.example.marketplace.data.remote.TokenDto
 import com.example.marketplace.data.remote.UserDto
+import com.example.marketplace.di.ApiWithLoginInterceptor
 import com.example.marketplace.domain.marketplace.Item
 import com.example.marketplace.domain.marketplace.Order
 import com.example.marketplace.domain.marketplace.Token
@@ -25,62 +26,13 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import com.example.marketplace.domain.util.createPartMapFromItem
 import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import javax.inject.Inject
 
-class MarketplaceRepositoryImpl(
-    private val api: MarketplaceApi,
-    private val adapter: JsonAdapter<Fail>
+class MarketplaceRepositoryImpl @Inject constructor(
+    @ApiWithLoginInterceptor
+    private val api: MarketplaceApi
 ): MarketplaceRepository {
-
-    override suspend fun login(
-        username: String,
-        password: String
-    ): Resource<Token> {
-        val response = api.login(username, password)
-
-        return if(response.isSuccessful) {
-            Resource.Success(
-                data = response.body()!!.toToken()
-            )
-        } else {
-            returnErrorResource(response)
-        }
-    }
-
-    override suspend fun refreshToken(refreshToken: Map<String, String>): Resource<Token> {
-        val response = api.refreshToken(refreshToken)
-
-        return if(response.isSuccessful) {
-            Resource.Success(
-                data = response.body()!!.toToken()
-            )
-        } else {
-            returnErrorResource(response)
-        }
-    }
-
-    override suspend fun register(user: User): Resource<String> {
-        val response = api.register(user.toUserDto())
-
-        return if(response.isSuccessful) {
-            Resource.Success(
-                data = "Successfully deleted user"
-            )
-        } else {
-            returnErrorResource(response)
-        }
-    }
-
-    override suspend fun verifyEmail(emailVerification: Map<String, String>): Resource<Token> {
-        val response = api.verifyEmail(emailVerification)
-
-        return if (response.isSuccessful) {
-            Resource.Success(
-                data = response.body()!!.toToken()
-            )
-        } else {
-            returnErrorResource(response)
-        }
-    }
 
     override suspend fun getMyUser(): Resource<User> {
         return try {
@@ -209,25 +161,4 @@ class MarketplaceRepositoryImpl(
             returnErrorResource(response)
         }
     }
-
-    private suspend fun <R> returnErrorResource(e: Exception): Resource.Error<R> {
-        e.printStackTrace()
-        return Resource.Error(
-            message = e.message ?: "An unknown error occurred"
-        )
-    }
-
-    private suspend fun <T, R> returnErrorResource(response: Response<T>): Resource.Error<R> {
-        return if(response.errorBody() == null) {
-            Resource.Error(
-                message = "Unresolved Error"
-            )
-        } else {
-            val fail = adapter.fromJson(response.errorBody()!!.string())
-            Resource.Error(
-                message = fail?.detail?.getOrNull(0)?.msg ?: "Unresolved Error"
-            )
-        }
-    }
-
 }
