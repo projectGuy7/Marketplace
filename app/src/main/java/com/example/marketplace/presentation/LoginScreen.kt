@@ -34,7 +34,6 @@ fun LogIn(
     state: LoginState,
     onEvent: (ViewIntent) -> Unit
 ) {
-
     val defaultModifier = Modifier.padding(10.dp)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

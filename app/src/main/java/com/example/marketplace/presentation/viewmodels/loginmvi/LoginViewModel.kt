@@ -4,15 +4,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import androidx.navigation3.runtime.NavBackStack
 import com.example.marketplace.domain.marketplace.User
 import com.example.marketplace.domain.repository.LoginRepository
 import com.example.marketplace.domain.repository.MarketplaceRepository
 import com.example.marketplace.domain.util.Resource
+import com.example.marketplace.presentation.navigation.VerificationCodeScreen
 import com.example.marketplace.presentation.viewmodels.basemvipattern.BaseViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
-    val repository: LoginRepository
+
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    val repository: LoginRepository,
+    @Assisted val backstack: NavBackStack
 ) : BaseViewModel<LoginIntent, LoginState>() {
 
     override var state by mutableStateOf(LoginState())
@@ -34,7 +43,7 @@ class LoginViewModel(
                 }
                 LoginIntent.SendCredentials -> {
                     state = state.copy(loading = true)
-                    state = when(val result = repository.register(
+                    when(val result = repository.register(
                         User(
                             name = state.loginField,
                             email = state.emailField,
@@ -42,11 +51,12 @@ class LoginViewModel(
                         )
                     )) {
                         is Resource.Error<String> -> {
-                            state.copy(loading = false, error = result.message)
+                            state = state.copy(loading = false, error = result.message)
                         }
 
                         is Resource.Success<String> -> {
-                            state.copy(loading = false)
+                            state = state.copy(loading = false)
+                            backstack.add(VerificationCodeScreen)
                         }
                     }
                 }
