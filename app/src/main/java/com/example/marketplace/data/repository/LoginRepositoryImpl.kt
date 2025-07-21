@@ -1,5 +1,6 @@
 package com.example.marketplace.data.repository
 
+import android.util.Log
 import com.example.marketplace.data.mappers.toToken
 import com.example.marketplace.data.mappers.toUserDto
 import com.example.marketplace.data.remote.MarketplaceApi
@@ -41,7 +42,6 @@ class LoginRepositoryImpl @Inject constructor(
 
     override suspend fun register(user: User): Resource<String> {
         val response = api.register(user.toUserDto())
-
         return if(response.isSuccessful) {
             Resource.Success(
                 data = "Successfully deleted user"

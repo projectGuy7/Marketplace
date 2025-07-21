@@ -1,5 +1,6 @@
 package com.example.marketplace.data.remote
 
+import com.example.marketplace.domain.marketplace.Success
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -34,7 +35,7 @@ interface MarketplaceApi {
     @POST("/register")
     suspend fun register(
         @Body user: UserDto
-    ): Response<String>
+    ): Response<Success>
 
     @POST("/verify_email")
     suspend fun verifyEmail(

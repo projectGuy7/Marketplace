@@ -31,11 +31,13 @@ import com.example.marketplace.presentation.viewmodels.loginmvi.LoginState
 
 @Composable
 fun LogIn(
+    modifier: Modifier = Modifier,
     state: LoginState,
-    onEvent: (ViewIntent) -> Unit
+    onEvent: (LoginIntent) -> Unit
 ) {
     val defaultModifier = Modifier.padding(10.dp)
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -66,24 +68,37 @@ fun LogIn(
             singleLine = true,
             modifier = defaultModifier
         )
-        Button(
-            modifier = defaultModifier,
-            onClick = {
-                onEvent(LoginIntent.SendCredentials)
-            },
-            content = {
+        Box(
+            contentAlignment = Alignment.Center
+        ) {
+            Button(
+                modifier = defaultModifier,
+                onClick = {
+                    onEvent(LoginIntent.SendCredentials)
+                },
+                content = {
                     Box(
                         modifier = Modifier.width(80.dp).height(40.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            "Confirm",
-                            fontSize = 18.sp
-                        )
+                        if(state.loading) {
+                            Loading(
+                                circleSize = 10.dp,
+                                travelDistance = 5.dp,
+                                spaceBetween = 2.dp,
+                                circleColor = MaterialTheme.colorScheme.onPrimary
+                            )
+                        } else {
+                            Text(
+                                "Confirm",
+                                fontSize = 18.sp
+                            )
+                        }
                     }
                 },
-            shape = RoundedCornerShape(15.dp)
-        )
+                shape = RoundedCornerShape(15.dp)
+            )
+        }
     }
 }
 
@@ -95,6 +110,7 @@ fun LogIn(
 @Composable
 fun LogInPreview() {
     LogIn(
+        Modifier,
         LoginState(),
         {}
     )

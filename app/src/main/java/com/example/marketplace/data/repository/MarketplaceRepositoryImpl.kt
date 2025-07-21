@@ -6,7 +6,7 @@ import com.example.marketplace.data.mappers.toOrderDto
 import com.example.marketplace.data.mappers.toToken
 import com.example.marketplace.data.mappers.toUser
 import com.example.marketplace.data.mappers.toUserDto
-import com.example.marketplace.data.remote.Fail
+import com.example.marketplace.domain.marketplace.Fail
 import com.example.marketplace.data.remote.MarketplaceApi
 import com.example.marketplace.data.remote.TokenDto
 import com.example.marketplace.data.remote.UserDto

@@ -23,10 +23,12 @@ import com.example.marketplace.presentation.viewmodels.loginmvi.LoginState
 
 @Composable
 fun CodeVerification(
+    modifier: Modifier = Modifier,
     state: LoginState,
-    onEvent: (ViewIntent) -> Unit
+    onEvent: (LoginIntent) -> Unit
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -46,7 +48,7 @@ fun CodeVerification(
                 text = "We've sent you the confirmation code\non your email"
             )
             TextField(
-                value = state.loginField,
+                value = state.verificationCode,
                 onValueChange = { newValue: String -> onEvent(LoginIntent.TypeInCodeVerificationField(newValue))},
                 placeholder = { Text("Type in your verification code") },
                 singleLine = true,
@@ -83,6 +85,7 @@ fun CodeVerification(
 @Composable
 fun CodeVerificationPreview() {
     CodeVerification(
+        Modifier,
         LoginState(),
         {}
     )

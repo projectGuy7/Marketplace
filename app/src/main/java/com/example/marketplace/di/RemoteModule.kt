@@ -4,6 +4,7 @@ import com.example.marketplace.data.remote.LoginInterceptor
 import com.example.marketplace.data.remote.MarketplaceApi
 import dagger.Module
 import dagger.Provides
+import dagger.assisted.Assisted
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
@@ -13,13 +14,13 @@ import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RemoteModule {
+class RemoteModule {
 
     @Provides
     @ApiWithoutInterceptor
     fun provideMarketplaceApi(): MarketplaceApi {
         return Retrofit.Builder()
-            .baseUrl("localhost") // TODO: Modify baseurl
+            .baseUrl("http://10.0.2.2/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(MarketplaceApi::class.java)
@@ -33,7 +34,7 @@ abstract class RemoteModule {
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("localhost") // TODO: Modify baseurl
+            .baseUrl("http://10.0.2.2/")
             .addConverterFactory(MoshiConverterFactory.create())
             .client(client)
             .build()

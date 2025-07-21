@@ -1,6 +1,6 @@
 package com.example.marketplace.data.repository
 
-import com.example.marketplace.data.remote.Fail
+import com.example.marketplace.domain.marketplace.Fail
 import com.example.marketplace.domain.util.Resource
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -24,7 +24,7 @@ fun <T, R> returnErrorResource(response: Response<T>): Resource.Error<R> {
 
         val fail = adapter.fromJson(response.errorBody()!!.string())
         Resource.Error(
-            message = fail?.detail?.getOrNull(0)?.msg ?: "Unresolved Error"
+            message = fail?.detail ?: "Unresolved Error"
         )
     }
 }
