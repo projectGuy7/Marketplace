@@ -3,36 +3,28 @@ package com.example.marketplace.data.repository
 import com.example.marketplace.data.mappers.toItem
 import com.example.marketplace.data.mappers.toOrder
 import com.example.marketplace.data.mappers.toOrderDto
-import com.example.marketplace.data.mappers.toToken
 import com.example.marketplace.data.mappers.toUser
 import com.example.marketplace.data.mappers.toUserDto
-import com.example.marketplace.domain.marketplace.Fail
 import com.example.marketplace.data.remote.MarketplaceApi
-import com.example.marketplace.data.remote.TokenDto
-import com.example.marketplace.data.remote.UserDto
 import com.example.marketplace.di.ApiWithLoginInterceptor
 import com.example.marketplace.domain.marketplace.Item
 import com.example.marketplace.domain.marketplace.Order
-import com.example.marketplace.domain.marketplace.Token
 import com.example.marketplace.domain.marketplace.User
-import com.example.marketplace.domain.repository.MarketplaceRepository
+import com.example.marketplace.domain.repository.HomeRepository
 import com.example.marketplace.domain.util.Resource
-import retrofit2.Response
 import java.io.File
-import okhttp3.RequestBody
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import com.example.marketplace.domain.util.createPartMapFromItem
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class MarketplaceRepositoryImpl @Inject constructor(
+class HomeRepositoryImpl @AssistedInject constructor(
     @ApiWithLoginInterceptor
+    @Assisted
     private val api: MarketplaceApi
-): MarketplaceRepository {
+): HomeRepository {
 
     override suspend fun getMyUser(): Resource<User> {
         return try {

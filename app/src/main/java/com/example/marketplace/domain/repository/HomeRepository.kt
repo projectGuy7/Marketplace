@@ -1,17 +1,11 @@
 package com.example.marketplace.domain.repository
 
-import com.example.marketplace.data.remote.TokenDto
 import com.example.marketplace.domain.marketplace.Item
 import com.example.marketplace.domain.marketplace.Order
-import com.example.marketplace.domain.marketplace.Token
 import com.example.marketplace.domain.marketplace.User
 import com.example.marketplace.domain.util.Resource
-import okhttp3.MultipartBody
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Multipart
 
-interface MarketplaceRepository {
+interface HomeRepository {
 
     suspend fun getMyUser(): Resource<User>
 

@@ -25,19 +25,4 @@ class RemoteModule {
             .build()
             .create(MarketplaceApi::class.java)
     }
-
-    @Provides
-    @ApiWithLoginInterceptor
-    fun provideMarketplaceApiWithLoginInterceptor(interceptor: LoginInterceptor): MarketplaceApi {
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-
-        return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2/")
-            .addConverterFactory(MoshiConverterFactory.create())
-            .client(client)
-            .build()
-            .create(MarketplaceApi::class.java)
-    }
 }

@@ -1,6 +1,5 @@
 package com.example.marketplace.presentation.viewmodels.loginmvi
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,8 +23,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel(assistedFactory = LoginViewModelFactory::class)
 class LoginViewModel @AssistedInject constructor(
     val repository: LoginRepository,
-    @Assisted val backstack: NavBackStack,
-    @Assisted val appContext: Context
+    @Assisted val backstack: NavBackStack
 ) : BaseViewModel<LoginIntent, LoginState>() {
 
     override var state by mutableStateOf(LoginState())

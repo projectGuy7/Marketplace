@@ -8,6 +8,6 @@ import dagger.assisted.AssistedFactory
 @AssistedFactory
 interface LoginViewModelFactory {
 
-    fun createLoginViewModel(backStack: NavBackStack, appContext: Context): LoginViewModel
+    fun createLoginViewModel(backStack: NavBackStack): LoginViewModel
 
 }

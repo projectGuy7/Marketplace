@@ -31,7 +31,7 @@ fun NavigationRoot(
     val backStack = rememberNavBackStack(LoginScreen)
     val loginViewModel: LoginViewModel = hiltViewModel(
         creationCallback = { factory: LoginViewModelFactory ->
-            factory.createLoginViewModel(backStack, appContext)
+            factory.createLoginViewModel(backStack)
         }
     )
     NavDisplay(

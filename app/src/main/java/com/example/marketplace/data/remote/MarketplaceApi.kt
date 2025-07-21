@@ -21,23 +21,23 @@ interface MarketplaceApi {
     // Authorization
 
     @FormUrlEncoded
-    @POST("/token")
+    @POST("auth/login")
     suspend fun login(
         @Field("username") username: String,
         @Field("password") password: String
     ): Response<TokenDto>
 
-    @POST("/token/refresh")
+    @POST("auth/refresh")
     suspend fun refreshToken(
         @Body refreshToken: Map<String, String>
     ): Response<TokenDto>
 
-    @POST("/register")
+    @POST("auth/register")
     suspend fun register(
         @Body user: UserDto
     ): Response<Success>
 
-    @POST("/verify_email")
+    @POST("auth/verify-email")
     suspend fun verifyEmail(
         @Body emailVerification: Map<String, String>
     ): Response<TokenDto>
