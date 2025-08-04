@@ -1,4 +1,4 @@
-package com.example.marketplace.presentation
+package com.example.marketplace.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.marketplace.presentation.viewmodels.basemvipattern.ViewIntent
 import com.example.marketplace.presentation.viewmodels.loginmvi.LoginIntent
 import com.example.marketplace.presentation.viewmodels.loginmvi.LoginState
 
@@ -49,7 +48,7 @@ fun CodeVerification(
             )
             TextField(
                 value = state.verificationCode,
-                onValueChange = { newValue: String -> onEvent(LoginIntent.TypeInCodeVerificationField(newValue))},
+                onValueChange = { newValue: String -> onEvent(LoginIntent.UpdateCodeVerificationField(newValue))},
                 placeholder = { Text("Type in your verification code") },
                 singleLine = true,
                 modifier = Modifier.padding(start = 0.dp, top = 10.dp, end = 10.dp, bottom = 10.dp)

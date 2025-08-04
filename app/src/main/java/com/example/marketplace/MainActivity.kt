@@ -1,7 +1,6 @@
 package com.example.marketplace
 
 import android.os.Bundle
-import android.os.Debug
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,9 +13,14 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation3.runtime.rememberNavBackStack
+import com.example.marketplace.di.LoginViewModelFactory
 import com.example.marketplace.presentation.ObserveAsEvents
 import com.example.marketplace.presentation.SnackbarController
+import com.example.marketplace.presentation.navigation.LoginScreen
 import com.example.marketplace.presentation.navigation.NavigationRoot
+import com.example.marketplace.presentation.viewmodels.loginmvi.LoginViewModel
 import com.example.marketplace.ui.theme.MarketplaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,8 +41,6 @@ class MainActivity : ComponentActivity() {
                         SnackbarHost(snackbarHostState)
                     }
                 ) { innerPadding ->
-                    Debug.waitForDebugger()
-
                     ObserveAsEvents(SnackbarController.events) { event ->
                         snackbarHostState.currentSnackbarData?.dismiss()
 
@@ -52,7 +54,9 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    NavigationRoot(modifier = Modifier.fillMaxSize().padding(innerPadding), applicationContext)
+                    NavigationRoot(
+                        modifier = Modifier.fillMaxSize().padding(innerPadding)
+                    )
                 }
             }
         }

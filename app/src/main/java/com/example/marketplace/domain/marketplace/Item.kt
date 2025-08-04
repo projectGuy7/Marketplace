@@ -1,5 +1,8 @@
 package com.example.marketplace.domain.marketplace
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Item(
     val name: String,
     val price: Int,

@@ -17,6 +17,7 @@ import com.example.marketplace.presentation.viewmodels.basemvipattern.BaseViewMo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -31,16 +32,16 @@ class LoginViewModel @AssistedInject constructor(
     override fun handleIntent(intent: LoginIntent) {
         viewModelScope.launch {
             when(intent) {
-                is LoginIntent.TypeInLoginField -> {
+                is LoginIntent.UpdateLoginField -> {
                     state = state.copy(loginField = intent.login)
                 }
-                is LoginIntent.TypeInPasswordField -> {
+                is LoginIntent.UpdatePasswordField -> {
                     state = state.copy(passwordField = intent.password)
                 }
-                is LoginIntent.TypeInCodeVerificationField -> {
+                is LoginIntent.UpdateCodeVerificationField -> {
                     state = state.copy(verificationCode = intent.codeVerification)
                 }
-                is LoginIntent.TypeInEmailField -> {
+                is LoginIntent.UpdateEmailField -> {
                     state = state.copy(emailField = intent.email)
                 }
                 LoginIntent.SendCredentials -> {
@@ -53,7 +54,7 @@ class LoginViewModel @AssistedInject constructor(
                         )
                     )) {
                         is Resource.Error<String> -> {
-                            state = state.copy(loading = false, error = result.message)
+                            state = state.copy(loading = false)
                             SnackbarController.sendEvent(SnackbarEvent(message = result.message ?: "Unresolved Error"))
                         }
 
@@ -68,7 +69,7 @@ class LoginViewModel @AssistedInject constructor(
 
                     when(val result = repository.verifyEmail(state.emailField, state.verificationCode)) {
                         is Resource.Error<Token> -> {
-                            state = state.copy(loading = false, error = result.message)
+                            state = state.copy(loading = false)
 
                             SnackbarController.sendEvent(SnackbarEvent(message = result.message ?: "Unresolved Error"))
                         }
@@ -76,6 +77,9 @@ class LoginViewModel @AssistedInject constructor(
                             state = state.copy(loading = false, token = result.data)
 
                             SnackbarController.sendEvent(SnackbarEvent(message = "Successfully Registered!"))
+                            delay(4000)
+                            backstack.clear()
+
                         }
                     }
                 }

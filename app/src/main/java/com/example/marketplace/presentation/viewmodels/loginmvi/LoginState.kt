@@ -9,7 +9,6 @@ data class LoginState(
     val emailField: String = "",
     val verificationCode: String = "",
     val token: Token? = null,
-    val loading: Boolean = false,
-    val error: String? = null
+    val loading: Boolean = false
 ): ViewState
 

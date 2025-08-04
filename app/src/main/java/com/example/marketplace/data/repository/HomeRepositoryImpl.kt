@@ -20,9 +20,8 @@ import com.example.marketplace.domain.util.createPartMapFromItem
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
-class HomeRepositoryImpl @AssistedInject constructor(
+class HomeRepositoryImpl constructor(
     @ApiWithLoginInterceptor
-    @Assisted
     private val api: MarketplaceApi
 ): HomeRepository {
 
