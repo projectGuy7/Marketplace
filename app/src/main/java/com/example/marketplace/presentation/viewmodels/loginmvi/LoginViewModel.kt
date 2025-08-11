@@ -19,12 +19,15 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 
 @HiltViewModel(assistedFactory = LoginViewModelFactory::class)
 class LoginViewModel @AssistedInject constructor(
     val repository: LoginRepository,
-    @Assisted val backstack: NavBackStack
+    @Assisted val backstack: NavBackStack,
+    @Assisted val tokenFile: File
 ) : BaseViewModel<LoginIntent, LoginState>() {
 
     override var state by mutableStateOf(LoginState())
@@ -74,8 +77,14 @@ class LoginViewModel @AssistedInject constructor(
                             SnackbarController.sendEvent(SnackbarEvent(message = result.message ?: "Unresolved Error"))
                         }
                         is Resource.Success<Token> -> {
-                            state = state.copy(loading = false, token = result.data)
+                            // TODO: Encrypt and write access token and refresh token {
+                            if(!tokenFile.exists()) {
+                                tokenFile.createNewFile()
+                            }
+                            val fos = FileOutputStream(tokenFile)
 
+                            // TODO }
+                            state = state.copy(loading = false)
                             SnackbarController.sendEvent(SnackbarEvent(message = "Successfully Registered!"))
                             delay(4000)
                             backstack.clear()

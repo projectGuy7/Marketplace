@@ -51,7 +51,7 @@ import com.example.marketplace.presentation.viewmodels.homemvi.HomeIntent
 import com.example.marketplace.presentation.viewmodels.homemvi.HomeState
 
 @Composable
-fun HomeScreen(state: HomeState, onEvent: (HomeIntent) -> Unit) {
+fun Home(state: HomeState, onEvent: (HomeIntent) -> Unit) {
     Column {
         Row(
             modifier = Modifier.padding(5.dp)
@@ -105,8 +105,8 @@ fun HomeScreen(state: HomeState, onEvent: (HomeIntent) -> Unit) {
     heightDp = 732
 )
 @Composable
-fun HomeScreenPreview() {
-    HomeScreen(
+fun HomePreview() {
+    Home(
         state = HomeState(items = listOf(
             Item(
                 name = "Black T-Shirt",

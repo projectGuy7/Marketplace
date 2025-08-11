@@ -21,6 +21,7 @@ import com.example.marketplace.presentation.screens.LogIn
 import com.example.marketplace.presentation.viewmodels.homemvi.HomeState
 import com.example.marketplace.presentation.viewmodels.homemvi.HomeViewModel
 import com.example.marketplace.presentation.viewmodels.loginmvi.LoginViewModel
+import java.io.File
 
 @Serializable
 data object LoginScreen: NavKey
@@ -35,9 +36,14 @@ data class HomeScreen(val state: HomeState): NavKey
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier,
-
+    tokenFile: File
 ) {
-    val backStack = rememberNavBackStack(LoginScreen)
+    val backStack = rememberNavBackStack<NavKey>()
+    if(!tokenFile.exists()) {
+        backStack.add(LoginScreen)
+    } else {
+        backStack.add(HomeScreen(HomeState()))
+    }
     val loginViewModel: LoginViewModel = hiltViewModel(
         creationCallback = { factory: LoginViewModelFactory ->
             factory.createLoginViewModel(backStack)
@@ -63,6 +69,8 @@ fun NavigationRoot(
                 }
                 is HomeScreen -> {
                     NavEntry(key) {
+
+
                         val homeViewModel: HomeViewModel = hiltViewModel(
                             creationCallback = { factory: HomeViewModelFactory ->
                                 factory.run {
@@ -77,6 +85,8 @@ fun NavigationRoot(
                                 }
                             }
                         )
+
+
                     }
                 }
                 else -> throw Exception("NavKey not identified")

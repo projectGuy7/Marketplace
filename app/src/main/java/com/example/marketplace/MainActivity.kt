@@ -23,6 +23,7 @@ import com.example.marketplace.presentation.navigation.NavigationRoot
 import com.example.marketplace.presentation.viewmodels.loginmvi.LoginViewModel
 import com.example.marketplace.ui.theme.MarketplaceTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             val snackbarHostState = remember {
                 SnackbarHostState()
