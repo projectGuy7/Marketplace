@@ -2,6 +2,8 @@ package com.example.marketplace.cryptomanager
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import androidx.compose.ui.res.stringResource
+import com.example.marketplace.R
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.KeyStore
@@ -10,7 +12,8 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 
-class CryptoManager {
+class CryptoManager(val alias: String) {
+
     private val keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
         load(null)
     }
@@ -26,7 +29,7 @@ class CryptoManager {
     }
 
     private fun getKey(): SecretKey {
-        val existingKey = keyStore.getEntry("secret", null) as? KeyStore.SecretKeyEntry
+        val existingKey = keyStore.getEntry(alias, null) as? KeyStore.SecretKeyEntry
         return existingKey?.secretKey ?: createKey()
     }
 
@@ -34,7 +37,7 @@ class CryptoManager {
         return KeyGenerator.getInstance(ALGORITHM).apply {
             init(
                 KeyGenParameterSpec.Builder(
-                    "secret",
+                    alias,
                     KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
                 )
                     .setBlockModes(BLOCK_MODE)
@@ -45,7 +48,7 @@ class CryptoManager {
             )
         }.generateKey()
     }
- // TODO: Rewrite logic so that I can encrypt and decrypt multiple stuff {
+
     fun encrypt(bytes: ByteArray, outputStream: OutputStream): ByteArray {
         val encryptedBytes = encryptCipher.doFinal(bytes)
         outputStream.use {
@@ -70,7 +73,7 @@ class CryptoManager {
             getDecryptCipherForIv(iv).doFinal(encryptedBytes)
         }
     }
-    // TODO }
+
     companion object {
         private const val ALGORITHM = KeyProperties.KEY_ALGORITHM_AES
         private const val BLOCK_MODE = KeyProperties.BLOCK_MODE_CBC

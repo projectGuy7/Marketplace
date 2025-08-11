@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import androidx.navigation3.runtime.NavBackStack
+import com.example.marketplace.cryptomanager.CryptoManager
 import com.example.marketplace.di.LoginViewModelFactory
 import com.example.marketplace.domain.marketplace.Token
 import com.example.marketplace.domain.marketplace.User
@@ -12,6 +13,7 @@ import com.example.marketplace.domain.repository.LoginRepository
 import com.example.marketplace.domain.util.Resource
 import com.example.marketplace.presentation.SnackbarController
 import com.example.marketplace.presentation.SnackbarEvent
+import com.example.marketplace.presentation.navigation.HomeScreen
 import com.example.marketplace.presentation.navigation.VerificationCodeScreen
 import com.example.marketplace.presentation.viewmodels.basemvipattern.BaseViewModel
 import dagger.assisted.Assisted
@@ -27,7 +29,8 @@ import java.io.FileOutputStream
 class LoginViewModel @AssistedInject constructor(
     val repository: LoginRepository,
     @Assisted val backstack: NavBackStack,
-    @Assisted val tokenFile: File
+    @Assisted val tokenFile: File,
+    @Assisted val cryptoManager: CryptoManager
 ) : BaseViewModel<LoginIntent, LoginState>() {
 
     override var state by mutableStateOf(LoginState())
@@ -77,18 +80,17 @@ class LoginViewModel @AssistedInject constructor(
                             SnackbarController.sendEvent(SnackbarEvent(message = result.message ?: "Unresolved Error"))
                         }
                         is Resource.Success<Token> -> {
-                            // TODO: Encrypt and write access token and refresh token {
                             if(!tokenFile.exists()) {
                                 tokenFile.createNewFile()
                             }
                             val fos = FileOutputStream(tokenFile)
+                            cryptoManager.encrypt("${result.data!!.accessToken}${result.data.refreshToken}".toByteArray(), fos)
 
-                            // TODO }
                             state = state.copy(loading = false)
                             SnackbarController.sendEvent(SnackbarEvent(message = "Successfully Registered!"))
                             delay(4000)
                             backstack.clear()
-
+                            backstack.add(HomeScreen())
                         }
                     }
                 }

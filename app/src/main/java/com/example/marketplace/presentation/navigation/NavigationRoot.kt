@@ -10,6 +10,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.example.marketplace.cryptomanager.CryptoManager
 import com.example.marketplace.data.remote.LoginInterceptor
 import com.example.marketplace.data.repository.HomeRepositoryImpl
 import com.example.marketplace.di.HomeViewModelFactory
@@ -30,13 +31,14 @@ data object LoginScreen: NavKey
 data object VerificationCodeScreen: NavKey
 
 @Serializable
-data class HomeScreen(val state: HomeState): NavKey
+data class HomeScreen(val state: HomeState = HomeState()): NavKey
 
 
 @Composable
 fun NavigationRoot(
     modifier: Modifier = Modifier,
-    tokenFile: File
+    tokenFile: File,
+    cryptoManager: CryptoManager
 ) {
     val backStack = rememberNavBackStack<NavKey>()
     if(!tokenFile.exists()) {
@@ -46,7 +48,7 @@ fun NavigationRoot(
     }
     val loginViewModel: LoginViewModel = hiltViewModel(
         creationCallback = { factory: LoginViewModelFactory ->
-            factory.createLoginViewModel(backStack)
+            factory.createLoginViewModel(backStack, tokenFile, cryptoManager)
         }
     )
     NavDisplay(
@@ -69,8 +71,6 @@ fun NavigationRoot(
                 }
                 is HomeScreen -> {
                     NavEntry(key) {
-
-
                         val homeViewModel: HomeViewModel = hiltViewModel(
                             creationCallback = { factory: HomeViewModelFactory ->
                                 factory.run {
